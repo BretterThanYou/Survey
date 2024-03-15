@@ -18,7 +18,7 @@ survey.onComplete.add(function (sender, options) {
   // Display the "Saving..." message (pass a string value to display a custom message)
   options.showSaveInProgress();
   const xhr = new XMLHttpRequest();
-  xhr.open("POST", "linktomongodb");
+  xhr.open("POST", "databaselink");
   xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
   xhr.onload = xhr.onerror = function () {
     if (xhr.status == 200) {
