@@ -4,12 +4,24 @@ import { Model } from "survey-core";
 const surveyJson = {
   elements: [{
     name: "FirstName",
-    title: "Enter your first name:",
+    title: "Please Enter your first name:",
     type: "text"
   }, {
     name: "LastName",
     title: "Enter your last name:",
     type: "text"
+  },
+  {
+    "type": "radiogroup",
+    "name": "car",
+    "title": "Which is the brand of your car?",
+    "isRequired": true,
+    "showNoneItem": true,
+    "showOtherItem": true,
+    "colCount": 1,
+    "choices": [ "Ford", "Vauxhall", "Volkswagen", "Nissan", "Audi", "Mercedes-Benz", "BMW", "Peugeot", "Toyota" ],
+    "separateSpecialChoices": true,
+    "showClearButton": true
   }]
 };
 
