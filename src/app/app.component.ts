@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Model } from "survey-core";
 
 const surveyJson = {
@@ -54,7 +55,12 @@ survey.onComplete.add(function (sender, options) {
 export class AppComponent implements OnInit {
   title = 'survey-app';
   surveyModel: any;
+  isBrowser: boolean;
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object){
+    this.isBrowser  = isPlatformBrowser(this.platformId);
+
+  }
   ngOnInit() {
     const survey = new Model(surveyJson);
     this.surveyModel = survey;

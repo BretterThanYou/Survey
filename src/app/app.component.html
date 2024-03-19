@@ -227,7 +227,7 @@
       </svg>
       <h1>Hello, {{ title }}</h1>
       <p>Congratulations! Your app is running. 🎉</p>
-      <survey [model]="surveyModel"></survey>
+      <survey [model]="surveyModel" *ngIf="isBrowser"></survey>
     </div>
   </div>
 </main>
