@@ -225,9 +225,9 @@
           <clipPath id="a"><path fill="#fff" d="M0 0h982v239H0z" /></clipPath>
         </defs>
       </svg>
-      <h1>Hello, {{ title }}</h1>
-      <p>Congratulations! Your app is running. 🎉</p>
-      <survey [model]="surveyModel"></survey>
+      <h1>Hello, QCC Student!</h1>
+      <p>Please fill out this survey</p>
+      <survey [model]="surveyModel" *ngIf="isBrowser"></survey>
     </div>
   </div>
 </main>

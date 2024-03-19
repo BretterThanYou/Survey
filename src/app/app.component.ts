@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Model } from "survey-core";
 
 const surveyJson = {
   elements: [{
     name: "FirstName",
-    title: "Please Enter your first name:",
+    title: "Enter your first name:",
     type: "text"
   }, {
     name: "LastName",
@@ -13,16 +14,35 @@ const surveyJson = {
   },
   {
     "type": "radiogroup",
-    "name": "car",
-    "title": "Which is the brand of your car?",
+    "name": "major",
+    "title": "Which is your major at Queensborough Community College?",
     "isRequired": true,
-    "showNoneItem": true,
-    "showOtherItem": true,
     "colCount": 1,
-    "choices": [ "Ford", "Vauxhall", "Volkswagen", "Nissan", "Audi", "Mercedes-Benz", "BMW", "Peugeot", "Toyota" ],
+    "choices": [ "Computer Science", "Internet and Information Technology", "Computer Science and Information Security", "Computer Engineering Technology", "Computer Information Systems", "Cybersecurity" ],
     "separateSpecialChoices": true,
     "showClearButton": true
-  }]
+  },
+  {
+    "type": "radiogroup",
+    "name": "favoritelanguage",
+    "title": "What is your favorite computer language?",
+    "isRequired": true,
+    "colCount": 1,
+    "choices": [ "HTML", "CSS", "Javascript", "Python", "C++", "C", "C#", "Java", "Ruby", "SQL", "Swift", "Kotlin", "GoLang", "Rust", "PHP", "R" ],
+    "separateSpecialChoices": true,
+    "showClearButton": true
+  },
+  {
+    "type": "radiogroup",
+    "name": "favoritelanguage",
+    "title": "What type of job would you like after you graduate?",
+    "isRequired": true,
+    "colCount": 1,
+    "choices": [ "Software Engineer", "Fullstack Web Developer", "Database Administrator", "Cybersecurity Analyst", "Network Engineer", "Mobile App Developer", "Artificial Intelligence Engineer", "User Interface Developer", "Computer Hardware Engineer", "Video game Developer"],
+    "separateSpecialChoices": true,
+    "showClearButton": true
+  }
+]
 };
 
 const survey = new Model(surveyJson);
@@ -54,7 +74,12 @@ survey.onComplete.add(function (sender, options) {
 export class AppComponent implements OnInit {
   title = 'survey-app';
   surveyModel: any;
+  isBrowser: boolean;
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object){
+    this.isBrowser  = isPlatformBrowser(this.platformId);
+
+  }
   ngOnInit() {
     const survey = new Model(surveyJson);
     this.surveyModel = survey;
