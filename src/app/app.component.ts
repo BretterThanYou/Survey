@@ -34,7 +34,7 @@ const surveyJson = {
   },
   {
     "type": "radiogroup",
-    "name": "favoritelanguage",
+    "name": "job",
     "title": "What type of job would you like after you graduate?",
     "isRequired": true,
     "colCount": 1,
@@ -45,26 +45,8 @@ const surveyJson = {
 ]
 };
 
-const survey = new Model(surveyJson);
-survey.onComplete.add(function (sender, options) {
-  // Display the "Saving..." message (pass a string value to display a custom message)
-  options.showSaveInProgress();
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", "databaselink");
-  xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-  xhr.onload = xhr.onerror = function () {
-    if (xhr.status == 200) {
-      // Display the "Success" message (pass a string value to display a custom message)
-      options.showSaveSuccess();
-      // Alternatively, you can clear all messages:
-      // options.clearSaveMessages();
-    } else {
-      // Display the "Error" message (pass a string value to display a custom message)
-      options.showSaveError();
-    }
-  };
-  xhr.send(JSON.stringify(sender.data));
-});
+// const survey = new Model(surveyJson);
+
 
 @Component({
   selector: 'app-root',
@@ -82,6 +64,27 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     const survey = new Model(surveyJson);
+    survey.onComplete.add(function (sender, options) {
+      //Display the "Saving..." message (pass a string value to display a custom message)
+      options.showSaveInProgress();
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://nk82oxoc68.execute-api.us-east-1.amazonaws.com/default/DynamoDB-Access");
+      xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+      xhr.onload = xhr.onerror = function () {
+        if (xhr.status == 200) {
+          // Display the "Success" message (pass a string value to display a custom message)
+          options.showSaveSuccess();
+          // Alternatively, you can clear all messages:
+          // options.clearSaveMessages();
+        } else {
+          // Display the "Error" message (pass a string value to display a custom message)
+          options.showSaveError();
+        }
+      };
+      xhr.send(JSON.stringify({}));
+      let derp = JSON.stringify(sender.data);
+      debugger
+    });
     this.surveyModel = survey;
   }
 }
