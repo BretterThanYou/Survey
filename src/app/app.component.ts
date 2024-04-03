@@ -81,9 +81,7 @@ export class AppComponent implements OnInit {
           options.showSaveError();
         }
       };
-      xhr.send(JSON.stringify({}));
-      let derp = JSON.stringify(sender.data);
-      debugger
+    xhr.send(JSON.stringify(sender.data));
     });
     this.surveyModel = survey;
   }
