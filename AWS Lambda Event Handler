@@ -1,0 +1,70 @@
+This is the Python code to handle post and get requests and access the AWS DynamoDB:
+
+import boto3
+import json
+import uuid
+
+print('Loading function')
+dynamo = boto3.client('dynamodb')
+
+
+def respond(err, res=None):
+    return {
+        'statusCode': '400' if err else '200',
+        'body': err.message if err else json.dumps(res),
+        'headers': {
+            'Content-Type': 'application/json',
+        },
+    }
+
+def my_put_item(dynamo, x):
+    dynamo.put_item(
+    TableName="survey-table",
+    Item={
+        'survey-id': {"S":str(uuid.uuid4())},
+        'first_name': {"S": x['first_name']},
+        'major': {"S": x['major']},
+        'last_name': {"S": x['last_name']},
+        'favorite_language': {"S": x['favorite_language']},
+        'job': {"S": x['job']},
+    }
+    )
+
+def my_get_item(dynamo):
+    items = dynamo.scan(
+    TableName="survey-table"
+    )["Items"]
+    newItems = []
+    for item in items:
+        newItem = {
+            "favorite_language": item["favorite_language"]["S"],
+            "major": item["major"]["S"],
+            "job": item["job"]["S"]
+        }
+        newItems.append(newItem)
+    return newItems
+
+def lambda_handler(event, context):
+    '''Demonstrates a simple HTTP endpoint using API Gateway. You have full
+    access to the request and response payload, including headers and
+    status code.
+
+    To scan a DynamoDB table, make a GET request with the TableName as a
+    query string parameter. To put, update, or delete an item, make a POST,
+    PUT, or DELETE request respectively, passing in the payload to the
+    DynamoDB API as a JSON body.
+    '''
+    print("Received event: " + json.dumps(event, indent=2))
+
+    operation = event['httpMethod']
+    if operation == 'POST':
+        #payload = event['queryStringParameters'] if operation == 'GET' else json.loads(event['body'])
+        body=json.loads(event['body'])
+        x = {"first_name": body["FirstName"], "last_name":body["LastName"], "major":body["major"], "favorite_language": body["favoritelanguage"], "job": body["job"]}
+        return respond(None, my_put_item(dynamo, x))
+    elif operation == 'GET':
+        asdf = my_get_item(dynamo)
+        print(asdf)
+        return respond(None, asdf)
+    else:
+        return respond(None)#(ValueError('Unsupported method "{}"'.format(operation)))
